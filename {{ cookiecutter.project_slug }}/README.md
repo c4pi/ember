@@ -43,13 +43,13 @@ uv run pytest
 
 ## Development commands
 
-| Command | Description |
-|--------|-------------|
-| `uv sync --all-extras --dev` | Install runtime and dev dependencies |
-| `uv run ruff check .` | Lint |
-| `uv run mypy src` | Type-check |
-| `uv run pytest -q` | Run tests |
-| `uv run pre-commit run --all-files` | Run all pre-commit hooks |
+| Command                             | Description                          |
+| ----------------------------------- | ------------------------------------ |
+| `uv sync --all-extras --dev`        | Install runtime and dev dependencies |
+| `uv run ruff check .`               | Lint                                 |
+| `uv run mypy src`                   | Type-check                           |
+| `uv run pytest -q`                  | Run tests                            |
+| `uv run pre-commit run --all-files` | Run all pre-commit hooks             |
 
 ## Settings
 
@@ -64,6 +64,7 @@ A starter GitHub Actions workflow is included at `.github/workflows/ci.yml`.
 It runs lint, type-checking, and tests on Linux, macOS, and Windows on push/PR.
 
 ## License
+
 {% if cookiecutter.license == "MIT" %}
 MIT (see `LICENSE`).
 {% else %}

@@ -5,7 +5,6 @@
   "version": "0.1.0",
   "description": "Short project description.",
   "add_keywords": ["no", "yes"],
-  "project_keywords": "",
   "python_version": "3.12",
   "python_version_ruff": "py312",
   "license": ["none", "MIT"],
