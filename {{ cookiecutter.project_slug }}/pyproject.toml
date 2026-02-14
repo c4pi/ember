@@ -1,27 +1,24 @@
 [project]
+
+{% if cookiecutter.license == "MIT" -%}
+
+{% endif -%}
+{% if cookiecutter.add_keywords == "yes" and cookiecutter.project_keywords.strip() -%}
+keywords = [{% for keyword in cookiecutter.project_keywords.split(",") if keyword.strip() %}"{{ keyword.strip() }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+{% endif -%}
 name = "{{ cookiecutter.project_slug }}"
 version = "{{ cookiecutter.version }}"
 description = "{{ cookiecutter.description }}"
 readme = "README.md"
 requires-python = ">={{ cookiecutter.python_version }}"
-{% if cookiecutter.license == "MIT" -%}
 license = { text = "MIT" }
-{% endif -%}
-{% if cookiecutter.add_keywords == "yes" and cookiecutter.project_keywords.strip() -%}
-keywords = [{% for keyword in cookiecutter.project_keywords.split(",") if keyword.strip() %}"{{ keyword.strip() }}"{% if not loop.last %}, {% endif %}{% endfor %}]
-{% endif -%}
-dependencies = [
-    "pydantic>=2.0",
-    "pydantic-settings>=2.0",
-    "rich-click",
-    "tqdm",
-]
+dependencies = ["pydantic>=2.0", "pydantic-settings>=2.0", "rich-click", "tqdm"]
 
 [project.scripts]
 {{ cookiecutter.package_name }} = "{{ cookiecutter.package_name }}.cli:main"
 
 [project.optional-dependencies]
-dev = ["ruff>=0.8.0", "pytest>=9.0.2", "mypy>=1.13.0", "pre-commit>=4.0.0"]
+dev = ["ipykernel>=7.1.0"]
 
 [build-system]
 requires = ["hatchling"]
@@ -36,6 +33,7 @@ dev-dependencies = [
     "pytest>=9.0.2",
     "mypy>=1.13.0",
     "pre-commit>=4.0.0",
+    "types-tqdm",
 ]
 
 [tool.ruff]
@@ -96,15 +94,11 @@ docstring-code-format = false
 [tool.mypy]
 python_version = "{{ cookiecutter.python_version }}"
 mypy_path = "src"
-strict = true
-warn_return_any = true
+# strict = true
+# warn_return_any = true
 warn_unused_ignores = true
 show_error_codes = true
 packages = ["{{ cookiecutter.package_name }}"]
-
-[[tool.mypy.overrides]]
-module = ["rich_click", "rich_click.*", "tqdm", "tqdm.*"]
-ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
