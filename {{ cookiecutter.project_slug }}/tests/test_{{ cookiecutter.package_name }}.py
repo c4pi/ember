@@ -1,4 +1,7 @@
+from click.testing import CliRunner
+
 from {{ cookiecutter.package_name }} import __version__
+from {{ cookiecutter.package_name }}.cli import cli_group
 from {{ cookiecutter.package_name }}.settings import Settings, get_settings
 
 
@@ -16,3 +19,17 @@ def test_settings_defaults() -> None:
 def test_get_settings() -> None:
     s = get_settings()
     assert isinstance(s, Settings)
+
+
+def test_cli_help() -> None:
+    runner = CliRunner()
+    result = runner.invoke(cli_group, ["--help"])
+    assert result.exit_code == 0
+    assert "Commands" in result.output
+
+
+def test_cli_version() -> None:
+    runner = CliRunner()
+    result = runner.invoke(cli_group, ["version"])
+    assert result.exit_code == 0
+    assert __version__ in result.output

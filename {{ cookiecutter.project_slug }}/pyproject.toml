@@ -3,22 +3,25 @@ name = "{{ cookiecutter.project_slug }}"
 version = "{{ cookiecutter.version }}"
 description = "{{ cookiecutter.description }}"
 readme = "README.md"
-{% if cookiecutter.license == "MIT" %}
-license = { text = "MIT" }
-{% endif %}
 requires-python = ">={{ cookiecutter.python_version }}"
+{% if cookiecutter.license == "MIT" -%}
+license = { text = "MIT" }
+{% endif -%}
+{% if cookiecutter.add_keywords == "yes" and cookiecutter.project_keywords.strip() -%}
+keywords = [{% for keyword in cookiecutter.project_keywords.split(",") if keyword.strip() %}"{{ keyword.strip() }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+{% endif -%}
 dependencies = [
     "pydantic>=2.0",
     "pydantic-settings>=2.0",
+    "rich-click",
+    "tqdm",
 ]
 
+[project.scripts]
+{{ cookiecutter.package_name }} = "{{ cookiecutter.package_name }}.cli:main"
+
 [project.optional-dependencies]
-dev = [
-    "ruff>=0.8.0",
-    "pytest>=9.0.2",
-    "mypy>=1.13.0",
-    "pre-commit>=4.0.0",
-]
+dev = ["ruff>=0.8.0", "pytest>=9.0.2", "mypy>=1.13.0", "pre-commit>=4.0.0"]
 
 [build-system]
 requires = ["hatchling"]
@@ -43,38 +46,40 @@ indent-width = 4
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-    "D",
-    "ANN",
-    "TD",
-    "FIX",
-    "COM",
-    "E501",
-    "DJ",
-    "EXE",
-    "T10",
-    "TRY003",
-    "EM101",
-    "EM102",
-    "PLR0913",
-    "PLR2004",
-    "S101",
-    "T20",
-    "FBT",
-    "RET504",
-    "G004",
-    "BLE001",
-    "TRY300",
-    "S311",
-    "C901",
-    "PLR0911",
-    "PLR0912",
-    "PLR0915",
+    "D",       # docstrings
+    "ANN",     # type annotations enforcement
+    "TD",      # todo style
+    "FIX",     # fixme comments
+    "COM",     # trailing commas
+    "E501",    # line length
+    "DJ",      # django
+    "EXE",     # shebang
+    "T10",     # debugger
+    "TRY003",  # long exception msgs
+    "EM101",   # string in exception
+    "EM102",   # fstring in exception
+    "PLR0913", # too many args
+    "PLR2004", # magic values
+    "S101",    # assert
+    "T20",     # print statements
+    "FBT",     # boolean trap
+    "RET504",  # unnecessary assignment
+    "G004",    # logging fstring
+    "BLE001",  # blind exception
+    "TRY300",  # try else
+    "S311",    # random cryptographic
+    "C901",    # too complex
+    "PLR0911", # too many return statements
+    "PLR0912", # too many branches
+    "PLR0915", # too many statements
+    "S112",    # logging exception
+    "S110",    # try except pass
 ]
 fixable = ["ALL"]
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = ["S101", "ARG001", "ARG002", "PLR2004"]
+"tests/**/*.py" = ["S101", "ARG001", "ARG002", "PLR2004", "SLF001"]
 "**/__init__.py" = ["F401"]
 
 [tool.ruff.lint.isort]
@@ -96,6 +101,10 @@ warn_return_any = true
 warn_unused_ignores = true
 show_error_codes = true
 packages = ["{{ cookiecutter.package_name }}"]
+
+[[tool.mypy.overrides]]
+module = ["rich_click", "rich_click.*", "tqdm", "tqdm.*"]
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

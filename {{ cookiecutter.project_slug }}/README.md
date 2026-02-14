@@ -12,7 +12,7 @@
 ```bash
 uv sync
 cp .env.example .env
-uv run python main.py
+uv run {{ cookiecutter.package_name }} --help
 uv run pytest
 ```
 
@@ -34,6 +34,7 @@ uv run pytest
 ├── src/
 │   └── {{ cookiecutter.package_name }}/
 │       ├── __init__.py
+│       ├── cli.py
 │       └── settings.py
 └── tests/
     ├── __init__.py
