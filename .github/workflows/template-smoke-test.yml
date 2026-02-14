@@ -40,14 +40,7 @@ jobs:
           python -c "from pathlib import Path; p = Path(r'${{ runner.temp }}') / 'my_project' / 'LICENSE'; assert not p.exists(), f'Unexpected license file: {p}'"
 
       - name: Render template with MIT license
-        run: |
-          uvx cookiecutter . \
-            --no-input \
-            --output-dir "${{ runner.temp }}" \
-            project_name="My Project MIT" \
-            project_slug=my_project_mit \
-            package_name=my_project_mit \
-            license=MIT
+        run: uvx cookiecutter . --no-input --output-dir "${{ runner.temp }}" project_name="My Project MIT" project_slug=my_project_mit package_name=my_project_mit license=MIT
 
       - name: Assert MIT render includes LICENSE
         run: |
