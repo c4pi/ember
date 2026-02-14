@@ -36,7 +36,8 @@ jobs:
           uv run pytest -q
 
       - name: Assert default has no LICENSE
-        run: python -c "from pathlib import Path; p = Path(r'${{ runner.temp }}') / 'my_project' / 'LICENSE'; assert not p.exists(), f'Unexpected license file: {p}'"
+        run: |
+          python -c "from pathlib import Path; p = Path(r'${{ runner.temp }}') / 'my_project' / 'LICENSE'; assert not p.exists(), f'Unexpected license file: {p}'"
 
       - name: Render template with MIT license
         run: |
@@ -49,4 +50,5 @@ jobs:
             license=MIT
 
       - name: Assert MIT render includes LICENSE
-        run: python -c "from pathlib import Path; p = Path(r'${{ runner.temp }}') / 'my_project_mit' / 'LICENSE'; assert p.exists(), f'Missing license file: {p}'"
+        run: |
+          python -c "from pathlib import Path; p = Path(r'${{ runner.temp }}') / 'my_project_mit' / 'LICENSE'; assert p.exists(), f'Missing license file: {p}'"
