@@ -1,4 +1,4 @@
-{{ cookiecutter.license }} License
+MIT License
 
 Copyright (c) {{ cookiecutter.copyright_year }}{% if cookiecutter.author %} {{ cookiecutter.author }}{% endif %}
 

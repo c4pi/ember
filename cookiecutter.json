@@ -3,10 +3,10 @@
   "project_slug": "my_project",
   "package_name": "my_project",
   "version": "0.1.0",
-  "description": "Python 3.14 project template (UV/venv, Pydantic settings, pre-commit).",
-  "python_version": "3.14",
-  "python_version_ruff": "py314",
+  "description": "Short project description.",
+  "python_version": "3.12",
+  "python_version_ruff": "py312",
+  "license": ["none", "MIT"],
   "author": "",
-  "copyright_year": "2026",
-  "license": "MIT"
+  "copyright_year": "2026"
 }

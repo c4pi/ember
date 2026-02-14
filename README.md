@@ -1,44 +1,52 @@
 # Ember Cookiecutter Template
 
-Ember is a Cookiecutter template for modern Python 3.14 projects. The actual
-Cookiecutter payload lives under `{{ cookiecutter.project_slug }}/`, matching the
-structure shown inside that folder’s README.
+Cookiecutter template for modern Python projects with UV, Ruff, mypy, pytest, pre-commit, and typed settings.
+
+## Important
+
+Use Cookiecutter to render this template.
+Do not use GitHub's "Use this template" button if you expect variable substitution.
 
 ## Quick start
 
 ```bash
-cd ~/dev/ember
-cookiecutter . --output-dir=../
+uvx cookiecutter gh:c4pi/ember
 ```
 
-Cookiecutter will ask for fields like `project_name`, `project_slug`, and
-`package_name`. You can pass them non-interactively as well:
+Or render from a local clone:
 
 ```bash
-cookiecutter . \
-  --output-dir=../ \
-  --no-input \
-  project_name=STTC \
-  project_slug=sttc \
-  package_name=sttc
+git clone git@github.com:c4pi/ember.git
+cd ember
+uvx cookiecutter . --output-dir ../
 ```
 
-This command produced the `~/dev/sttc` example project currently checked in on
-my machine.
+You can also render non-interactively:
 
-## Template contents
+```bash
+uvx cookiecutter gh:c4pi/ember \
+  --no-input \
+  project_name="My Service" \
+  project_slug=my_service \
+  package_name=my_service
+```
 
-The template files live in `{{ cookiecutter.project_slug }}/` and already use
-Cookiecutter variables everywhere (README, pyproject, main.py, src/tests, etc.).
-When you render, Cookiecutter copies that directory, substituting the values you
-provided for the placeholders.
+## What gets generated
 
-## Rendering tips
+The template payload lives in `{{ cookiecutter.project_slug }}/` and renders a project with:
 
-- Use `--overwrite-if-exists` if you’re re-generating into an existing folder.
-- The generated project inherits the README from `{{ cookiecutter.project_slug }}/`,
-  so end users still get full documentation in their scaffolded repo.
-- After rendering, run `uv sync`, `uv run pytest`, and `uv run pre-commit run --all-files`
-  inside the new project to bootstrap dependencies and verify the hooks.
+- `src/` package layout
+- `pyproject.toml` (Hatchling build, Ruff, mypy, pytest config)
+- `tests/` starter tests
+- `.pre-commit-config.yaml` and `.secrets.baseline`
+- `.github/workflows/ci.yml` starter CI workflow
+- `.env.example` + Pydantic settings scaffold
 
-Happy scaffolding!
+## Local validation
+
+Template quality can be checked with:
+
+```bash
+uvx cookiecutter . --no-input --output-dir /tmp/ember-render
+python3 -m compileall /tmp/ember-render/my_project/main.py /tmp/ember-render/my_project/src /tmp/ember-render/my_project/tests
+```

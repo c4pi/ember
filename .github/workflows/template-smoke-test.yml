@@ -1,0 +1,52 @@
+name: Template Smoke Test
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+
+jobs:
+  render-and-check:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Render template
+        run: uvx cookiecutter . --no-input --output-dir "${{ runner.temp }}"
+
+      - name: Validate generated project
+        working-directory: ${{ runner.temp }}/my_project
+        run: |
+          uv sync --all-extras --dev
+          uv run ruff check .
+          uv run mypy src
+          uv run pytest -q
+
+      - name: Assert default has no LICENSE
+        run: python -c "from pathlib import Path; p = Path(r'${{ runner.temp }}') / 'my_project' / 'LICENSE'; assert not p.exists(), f'Unexpected license file: {p}'"
+
+      - name: Render template with MIT license
+        run: |
+          uvx cookiecutter . \
+            --no-input \
+            --output-dir "${{ runner.temp }}" \
+            project_name="My Project MIT" \
+            project_slug=my_project_mit \
+            package_name=my_project_mit \
+            license=MIT
+
+      - name: Assert MIT render includes LICENSE
+        run: python -c "from pathlib import Path; p = Path(r'${{ runner.temp }}') / 'my_project_mit' / 'LICENSE'; assert p.exists(), f'Missing license file: {p}'"
