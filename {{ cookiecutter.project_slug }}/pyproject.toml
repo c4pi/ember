@@ -3,8 +3,8 @@
 {% if cookiecutter.license == "MIT" -%}
 
 {% endif -%}
-{% if cookiecutter.add_keywords == "yes" and cookiecutter.project_keywords.strip() -%}
-keywords = [{% for keyword in cookiecutter.project_keywords.split(",") if keyword.strip() %}"{{ keyword.strip() }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+{% if cookiecutter.add_keywords == "yes" -%}
+# __COOKIECUTTER_KEYWORDS__
 {% endif -%}
 name = "{{ cookiecutter.project_slug }}"
 version = "{{ cookiecutter.version }}"
